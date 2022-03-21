@@ -13,6 +13,7 @@ namespace TRMDataManager.Library.DataAccess
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             //TODO: Make this SOLID/DRY/Better
+
             //Start filling in the sale details models we will save to the database
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
             ProductData products = new ProductData();
@@ -82,6 +83,15 @@ namespace TRMDataManager.Library.DataAccess
                     throw;
                 }
             }
+        }
+
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
+
+            return output;
         }
     }
 }
