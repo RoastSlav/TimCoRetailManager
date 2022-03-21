@@ -8,6 +8,6 @@ AS
 BEGIN
 	set nocount on;
 	
-	insert into dbo.SaleDetail(SaleID,ProductId,Quantity,PurchasePrice,Tax)
+	insert into dbo.SaleDetail(SaleId,ProductId,Quantity,PurchasePrice,Tax)
 	values (@SaleID,@ProductId,@Quantity,@PurchasePrice,@Tax);
 END
