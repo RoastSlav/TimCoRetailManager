@@ -14,7 +14,7 @@ namespace TRMDesktopUI.Library.Models
         {
             get
             {
-                return string.Join(",", Roles.Select(x => x.Value));
+                return string.Join(", ", Roles.Select(x => x.Value));
             }
         }
 
