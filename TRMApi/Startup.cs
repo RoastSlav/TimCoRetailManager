@@ -50,6 +50,7 @@ namespace TRMApi
             services.AddTransient<IProductData, ProductData>();
             services.AddTransient<ISaleData, SaleData>();
             services.AddTransient<IUserData, UserData>();
+
             services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
 
             services.AddAuthentication(options =>
@@ -63,7 +64,7 @@ namespace TRMApi
                         {
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey =
-                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKeyIsSecretSoDoNotTell")),
+                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Secrets:SecurityKey"))),
                             ValidateIssuer = false,
                             ValidateAudience = false,
                             ValidateLifetime = true,
