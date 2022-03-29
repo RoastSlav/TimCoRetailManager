@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
 
@@ -86,14 +86,20 @@ namespace TRMDataManager.Library.Internal.DataAccess
         }
         public void Dispose()
         {
-            if(!_connection.State.Equals(ConnectionState.Closed))
-                CommitTransaction();
-        }
+            if (_connection != null && !_connection.State.Equals(ConnectionState.Closed))
+            {
+                try
+                {
+                    CommitTransaction();
+                }
+                catch
+                {
+                    //TODO - Log this issue
+                }
+            }
 
-        //Open connection/start transaction method
-        //Load using the transaction
-        //Save using the transaction
-        //Close connection/stop transaction method
-        //Dispose
+            _transaction = null;
+            _connection = null;
+        }
     }
 }
