@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 
 namespace TRMDesktopUI.ViewModels
 {
@@ -16,9 +17,9 @@ namespace TRMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Message);
         }
 
-        public void Close()
+        public async Task Close()
         {
-            TryClose();
+            TryCloseAsync();
         }
     }
 }
