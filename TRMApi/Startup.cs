@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TRMApi.Data;
@@ -40,6 +41,7 @@ namespace TRMApi
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddLogging();
 
             //Personal Services
 
@@ -48,6 +50,7 @@ namespace TRMApi
             services.AddTransient<IProductData, ProductData>();
             services.AddTransient<ISaleData, SaleData>();
             services.AddTransient<IUserData, UserData>();
+            services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
 
             services.AddAuthentication(options =>
                 {
