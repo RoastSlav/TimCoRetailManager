@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using TRMDesktopUI.Library.Api;
-using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
 using TRMDesktopUI.Models;
 
@@ -19,17 +19,17 @@ namespace TRMDesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
-        IConfigHelper _configHelper;
+        private readonly IConfiguration _config;
         ISaleEndpoint _saleEndpoint;
         IMapper _mapper;
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, 
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfiguration config, 
             ISaleEndpoint saleEndpoint, IMapper mapper, StatusInfoViewModel status, IWindowManager window)
         {
             _productEndpoint = productEndpoint;
-            _configHelper = configHelper;
+            _config = config;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
             _status = status;
@@ -157,7 +157,7 @@ namespace TRMDesktopUI.ViewModels
 
         private decimal CalculateTax()
         {
-            decimal taxRate = _configHelper.GetTaxRate()/100;
+            decimal taxRate = decimal.Parse(_config.GetValue<string>("taxRate")) / 100;
             decimal taxAmount = 0;
 
             taxAmount = Cart

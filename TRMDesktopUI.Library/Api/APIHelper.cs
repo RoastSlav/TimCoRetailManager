@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using TRMDesktopUI.Library.Models;
 
 namespace TRMDesktopUI.Library.Api
@@ -14,12 +14,14 @@ namespace TRMDesktopUI.Library.Api
     {
         private HttpClient _apiClient;
         private ILoggedInUserModel _loggedInUserModel;
+        private readonly IConfiguration _config;
 
 
-        public APIHelper(ILoggedInUserModel loggedInUserModel)
+        public APIHelper(ILoggedInUserModel loggedInUserModel, IConfiguration config)
         {
-            InitializeClient();
+            _config = config;
             _loggedInUserModel = loggedInUserModel;
+            InitializeClient();
         }
 
         public HttpClient ApiClient
@@ -29,7 +31,7 @@ namespace TRMDesktopUI.Library.Api
 
         private void InitializeClient()
         {
-            string api = ConfigurationManager.AppSettings["api"];
+            string api =  _config.GetValue<string>("api");
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);
