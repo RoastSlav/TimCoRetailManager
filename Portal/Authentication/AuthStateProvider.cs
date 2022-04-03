@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace Portal.Authentication
 {
@@ -11,18 +12,22 @@ namespace Portal.Authentication
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
+        private readonly IConfiguration _config;
         private readonly AuthenticationState _anonymous;
+        private readonly string _authTokenStorageKey;
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IConfiguration config)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _config = config;
             _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            _authTokenStorageKey = _config["authTokenStorageKey"];
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _localStorage.GetItemAsync<string>("authToken");
+            var token = await _localStorage.GetItemAsync<string>(_authTokenStorageKey);
 
             if (string.IsNullOrWhiteSpace(token))
             {
