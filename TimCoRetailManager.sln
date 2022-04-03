@@ -19,10 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{036ADCD8-B34
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRMApi", "TRMApi\TRMApi.csproj", "{F5BE166B-206E-4117-9666-4EA1D684A9E3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CD39D5CF-F026-4DD6-B6FA-BF8636FC7E37}"
-	ProjectSection(SolutionItems) = preProject
-		Roadmap.txt = Roadmap.txt
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{DFC06F7A-B092-41B5-9F1B-2B2096727B3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portal", "Portal\Portal.csproj", "{68D777FC-976D-4B45-A9C6-0886261B0576}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +51,10 @@ Global
 		{F5BE166B-206E-4117-9666-4EA1D684A9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5BE166B-206E-4117-9666-4EA1D684A9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5BE166B-206E-4117-9666-4EA1D684A9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D777FC-976D-4B45-A9C6-0886261B0576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D777FC-976D-4B45-A9C6-0886261B0576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D777FC-976D-4B45-A9C6-0886261B0576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D777FC-976D-4B45-A9C6-0886261B0576}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +65,7 @@ Global
 		{E96EA623-33D2-486D-BCD7-B92F80DA7F57} = {AFBEAAF5-90C3-4803-933C-4192C5BD717D}
 		{A96D44BB-FAD7-45E9-AF0C-78037FBC59B5} = {036ADCD8-B341-4514-B11A-B2E48EDBF4C7}
 		{F5BE166B-206E-4117-9666-4EA1D684A9E3} = {AFBEAAF5-90C3-4803-933C-4192C5BD717D}
+		{68D777FC-976D-4B45-A9C6-0886261B0576} = {DFC06F7A-B092-41B5-9F1B-2B2096727B3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9798B588-15B6-46C1-AF1C-97EF11D2F349}
