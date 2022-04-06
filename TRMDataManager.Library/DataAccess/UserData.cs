@@ -24,5 +24,11 @@ namespace TRMDataManager.Library.DataAccess
 
             return output;
         }
+
+        public void CreateUser(UserModel user)
+        {
+            _sqlDataAccess.SaveData("dbo.spUser_Create",
+                new {user.Id, user.FirstName, user.LastName, user.EmailAddress}, "TRMData");
+        }
     }
 }
