@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRMApi", "TRMApi\TRMApi.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{DFC06F7A-B092-41B5-9F1B-2B2096727B3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portal", "Portal\Portal.csproj", "{68D777FC-976D-4B45-A9C6-0886261B0576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portal", "Portal\Portal.csproj", "{68D777FC-976D-4B45-A9C6-0886261B0576}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
