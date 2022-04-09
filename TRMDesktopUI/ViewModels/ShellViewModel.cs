@@ -13,9 +13,9 @@ namespace TRMDesktopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
-        private IEventAggregator _events;
-        private ILoggedInUserModel _user;
-        private IAPIHelper _apiHelper;
+        private readonly IEventAggregator _events;
+        private readonly ILoggedInUserModel _user;
+        private readonly IAPIHelper _apiHelper;
 
         public ShellViewModel(IEventAggregator events, ILoggedInUserModel user, IAPIHelper apiHelper)
         {
@@ -25,7 +25,7 @@ namespace TRMDesktopUI.ViewModels
 
             _events.SubscribeOnPublishedThread(this);
 
-            ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
         }
 
         public bool IsLoggedIn
@@ -52,24 +52,24 @@ namespace TRMDesktopUI.ViewModels
         }
         public async Task ExitApplication()
         {
-            TryCloseAsync();
+            await TryCloseAsync();
         }
 
         public async Task UserManagement()
         {
-            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new CancellationToken());
+            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new());
         }
 
         public async Task LogIn()
         {
-            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
         }
 
         public async Task LogOut()
         {
             _user.ResetUserModel();
             _apiHelper.LogOffUser();
-            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new CancellationToken());
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
             NotifyOfPropertyChange(() => IsLoggedIn);
             NotifyOfPropertyChange(() => IsLoggedOut);
         }

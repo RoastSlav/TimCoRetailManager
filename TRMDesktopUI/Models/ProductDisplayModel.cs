@@ -25,7 +25,7 @@ namespace TRMDesktopUI.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public void CallPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new(propertyName));
         }
     }
 }

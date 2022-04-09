@@ -19,7 +19,7 @@ namespace TRMDesktopUI.ViewModels
 
         public async Task Close()
         {
-            TryCloseAsync();
+            await TryCloseAsync();
         }
     }
 }

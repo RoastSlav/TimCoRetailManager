@@ -11,7 +11,6 @@ namespace TRMDataManager.Library.DataAccess
     public class UserData : IUserData
     {
         private readonly ISqlDataAccess _sqlDataAccess;
-        private readonly IConfiguration _config;
 
         public UserData(ISqlDataAccess sqlDataAccess)
         {

@@ -21,7 +21,7 @@ namespace Portal.Authentication
             _httpClient = httpClient;
             _localStorage = localStorage;
             _config = config;
-            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            _anonymous = new(new(new ClaimsIdentity()));
             _authTokenStorageKey = _config["authTokenStorageKey"];
         }
 
@@ -34,10 +34,10 @@ namespace Portal.Authentication
                 return _anonymous;
             }
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            _httpClient.DefaultRequestHeaders.Authorization = new("bearer", token);
 
-            return new AuthenticationState(
-                new ClaimsPrincipal(
+            return new(
+                new(
                     new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
         }
 

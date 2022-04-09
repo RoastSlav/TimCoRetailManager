@@ -43,7 +43,7 @@ namespace TRMDataManager.Library.DataAccess
             //TODO: Make this SOLID/DRY/Better
 
             //Start filling in the sale details models we will save to the database
-            List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
+            List<SaleDetailDBModel> details = new();
             var taxRate = GetTaxRate();
 
             foreach (var item in saleInfo.SaleDetails)
@@ -59,7 +59,7 @@ namespace TRMDataManager.Library.DataAccess
 
                 if (productInfo == null)
                 {
-                    throw new Exception($"The product Id of {detail.ProductId} could not be found in the database.");
+                    throw new($"The product Id of {detail.ProductId} could not be found in the database.");
                 }
 
                 detail.PurchasePrice = (productInfo.RetailPrice * detail.Quantity);
@@ -73,7 +73,7 @@ namespace TRMDataManager.Library.DataAccess
             }
 
             //Create the Sale model
-            SaleDbModel sale = new SaleDbModel
+            SaleDbModel sale = new()
             {
                 SubTotal = details.Sum(x => x.PurchasePrice),
                 Tax = details.Sum(x => x.Tax),

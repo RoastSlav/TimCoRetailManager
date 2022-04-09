@@ -9,5 +9,5 @@ BEGIN
 	set nocount on;
 	
 	insert into dbo.SaleDetail(SaleId,ProductId,Quantity,PurchasePrice,Tax)
-	values (@SaleID,@ProductId,@Quantity,@PurchasePrice,@Tax);
+	values (@SaleId,@ProductId,@Quantity,@PurchasePrice,@Tax);
 END

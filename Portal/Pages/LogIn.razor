@@ -20,6 +20,14 @@
 			<button type="submit" class="btn btn-primary" @onclick="RegisterUser">Register</button>
 		</div>
 	</div>
+	@if (showAuthenticationError)
+	{
+		<div class="form-row">
+			<div class="text-danger">
+				@authenticationErrorText
+			</div>
+		</div>	
+	}
 </EditForm>
 
 @code {

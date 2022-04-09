@@ -16,7 +16,7 @@ namespace Portal.Authentication
         private readonly AuthenticationStateProvider _authStateProvider;
         private readonly ILocalStorageService _localStorage;
         private readonly IConfiguration _config;
-        private readonly string authTokenStorageKey;
+        private readonly string _authTokenStorageKey;
 
         public AuthenticationService(HttpClient httpClient, AuthenticationStateProvider authStateProvider,
             ILocalStorageService localStorage, IConfiguration config)
@@ -25,7 +25,7 @@ namespace Portal.Authentication
             _authStateProvider = authStateProvider;
             _localStorage = localStorage;
             _config = config;
-            authTokenStorageKey = _config["authTokenStorageKey"];
+            _authTokenStorageKey = _config["authTokenStorageKey"];
         }
 
         public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
@@ -47,21 +47,21 @@ namespace Portal.Authentication
             }
 
             var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent, 
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new() { PropertyNameCaseInsensitive = true });
 
-            await _localStorage.SetItemAsync(authTokenStorageKey, result.Access_Token);
+            await _localStorage.SetItemAsync(_authTokenStorageKey, result.Access_Token);
 
             ((AuthStateProvider) _authStateProvider).NotifyUserAuthentication(result.Access_Token);
 
             _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("bearer", result.Access_Token);
+                new("bearer", result.Access_Token);
 
             return result;
         }
 
         public async Task LogOut()
         {
-            await _localStorage.RemoveItemAsync(authTokenStorageKey);
+            await _localStorage.RemoveItemAsync(_authTokenStorageKey);
             ((AuthStateProvider) _authStateProvider).NotifyUserLogout();
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }

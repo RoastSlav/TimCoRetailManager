@@ -34,7 +34,7 @@ namespace Portal
             builder.Services.AddSingleton<IAPIHelper, APIHelper>();
             builder.Services.AddSingleton<ILoggedInUserModel, LoggedInUserModel>();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();
         }

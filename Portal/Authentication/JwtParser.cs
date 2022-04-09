@@ -36,12 +36,12 @@ namespace Portal.Authentication
                 {
                     foreach (var parsedRole in parsedRoles)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, parsedRole.Trim('"')));
+                        claims.Add(new(ClaimTypes.Role, parsedRole.Trim('"')));
                     }
                 }
                 else
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, parsedRoles[0]));
+                    claims.Add(new(ClaimTypes.Role, parsedRoles[0]));
                 }
 
                 keyValuePairs.Remove(ClaimTypes.Role);

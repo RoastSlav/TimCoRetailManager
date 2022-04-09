@@ -13,7 +13,7 @@ namespace TRMDesktopUI.Library.Api
     public class APIHelper : IAPIHelper
     {
         private HttpClient _apiClient;
-        private ILoggedInUserModel _loggedInUserModel;
+        private readonly ILoggedInUserModel _loggedInUserModel;
         private readonly IConfiguration _config;
 
 
@@ -33,10 +33,10 @@ namespace TRMDesktopUI.Library.Api
         {
             string api =  _config.GetValue<string>("api");
 
-            _apiClient = new HttpClient();
-            _apiClient.BaseAddress = new Uri(api);
+            _apiClient = new();
+            _apiClient.BaseAddress = new(api);
             _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _apiClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
         }
 
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
@@ -48,17 +48,15 @@ namespace TRMDesktopUI.Library.Api
                 new KeyValuePair<string, string>("password", password)
             });
 
-            using (HttpResponseMessage response = await _apiClient.PostAsync("/Token", data))
+            using HttpResponseMessage response = await _apiClient.PostAsync("/Token", data);
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
-                    return result;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
+                return result;
+            }
+            else
+            {
+                throw new(response.ReasonPhrase);
             }
         }
 
@@ -71,25 +69,23 @@ namespace TRMDesktopUI.Library.Api
         {
             _apiClient.DefaultRequestHeaders.Clear();
             _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _apiClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
             _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
 
-            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/User"))
+            using HttpResponseMessage response = await _apiClient.GetAsync("/api/User");
+            if(response.IsSuccessStatusCode)
             {
-                if(response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
-                    _loggedInUserModel.CreatedDate = result.CreatedDate;
-                    _loggedInUserModel.EmailAddress = result.EmailAddress;
-                    _loggedInUserModel.FirstName = result.FirstName;
-                    _loggedInUserModel.LastName = result.LastName;
-                    _loggedInUserModel.Id = result.Id;
-                    _loggedInUserModel.Token = token;
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
+                _loggedInUserModel.CreatedDate = result.CreatedDate;
+                _loggedInUserModel.EmailAddress = result.EmailAddress;
+                _loggedInUserModel.FirstName = result.FirstName;
+                _loggedInUserModel.LastName = result.LastName;
+                _loggedInUserModel.Id = result.Id;
+                _loggedInUserModel.Token = token;
+            }
+            else
+            {
+                throw new(response.ReasonPhrase);
             }
         }
     }

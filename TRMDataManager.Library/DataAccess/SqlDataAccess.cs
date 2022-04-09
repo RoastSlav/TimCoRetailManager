@@ -29,22 +29,18 @@ namespace TRMDataManager.Library.DataAccess
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using(IDbConnection connection = new SqlConnection(connectionString))
-            {
-                List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
+            using IDbConnection connection = new SqlConnection(connectionString);
+            List<T> rows = connection.Query<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure).ToList();
 
-                return rows;
-            }
+            return rows;
         }
 
         public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
-            }
+            using IDbConnection connection = new SqlConnection(connectionString);
+            connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         private IDbConnection _connection;
@@ -84,6 +80,7 @@ namespace TRMDataManager.Library.DataAccess
             _transaction?.Rollback();
             _connection.Close();
         }
+
         public void Dispose()
         {
             if (_connection != null && !_connection.State.Equals(ConnectionState.Closed))
@@ -100,6 +97,7 @@ namespace TRMDataManager.Library.DataAccess
 
             _transaction = null;
             _connection = null;
+            GC.SuppressFinalize(this);
         }
     }
 }

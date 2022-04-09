@@ -15,9 +15,9 @@ namespace TRMDesktopUI.ViewModels
     {
         private string _userName = "raikov0411@gmail.com";
         private string _password = "Psw12!";
-        private IAPIHelper _apiHelper;
+        private readonly IAPIHelper _apiHelper;
         private string _errorMessage;
-        private IEventAggregator _events;
+        private readonly IEventAggregator _events;
 
         public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
         {
@@ -96,7 +96,7 @@ namespace TRMDesktopUI.ViewModels
                 //Capture more information about the user
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
-                await _events.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+                await _events.PublishOnUIThreadAsync(new LogOnEvent(), new());
             }
             catch (Exception ex)
             {

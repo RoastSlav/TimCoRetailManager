@@ -6,12 +6,10 @@ namespace TRMDataManager.Library.DataAccess
 {
     public class InventoryData : IInventoryData
     {
-        private readonly IConfiguration _config;
         private readonly ISqlDataAccess _sqlDataAccess;
 
-        public InventoryData(IConfiguration config, ISqlDataAccess sqlDataAccess)
+        public InventoryData(ISqlDataAccess sqlDataAccess)
         {
-            _config = config;
             _sqlDataAccess = sqlDataAccess;
         }
 

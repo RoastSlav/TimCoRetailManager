@@ -10,7 +10,7 @@ namespace TRMDesktopUI.Library.Api
 {
     public class SaleEndpoint : ISaleEndpoint
     {
-        private IAPIHelper _apiHelper;
+        private readonly IAPIHelper _apiHelper;
         public SaleEndpoint(IAPIHelper apiHelper)
         {
             _apiHelper = apiHelper;
@@ -18,16 +18,14 @@ namespace TRMDesktopUI.Library.Api
 
         public async Task PostSale(SaleModel sale)
         {
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale))
+            using HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale);
+            if (response.IsSuccessStatusCode)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    //Log successful call?
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
+                //Log successful call?
+            }
+            else
+            {
+                throw new(response.ReasonPhrase);
             }
         }
     }

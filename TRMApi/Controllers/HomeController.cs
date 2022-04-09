@@ -12,25 +12,22 @@ namespace TRMApi.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger,
-            RoleManager<IdentityRole> roleManager,
-                UserManager<IdentityUser> userManager)
-        {
-            _logger = logger;
-            _roleManager = roleManager;
-            _userManager = userManager;
-        }
+        //public HomeController(RoleManager<IdentityRole> roleManager,
+        //        UserManager<IdentityUser> userManager)
+        //{
+        //    _roleManager = roleManager;
+        //    _userManager = userManager;
+        //}
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
+        public IActionResult Privacy()
         {
             //string[] roles = {"Admin", "Manager", "Cashier"};
 

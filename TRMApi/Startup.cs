@@ -68,7 +68,7 @@ namespace TRMApi
                 })
                 .AddJwtBearer("JwtBearer", jwtBearerOptions =>
                     {
-                        jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                        jwtBearerOptions.TokenValidationParameters = new()
                         {
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey =
@@ -85,7 +85,7 @@ namespace TRMApi
             {
                 setup.SwaggerDoc(
                     "v1",
-                    new OpenApiInfo
+                    new()
                     {
                         Title = "TimCO Retail Manager API",
                         Version = "v1"

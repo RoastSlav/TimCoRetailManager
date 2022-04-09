@@ -100,7 +100,7 @@ namespace TRMApi.Controllers
         [Route("Admin/GetAllUsers")]
         public List<ApplicationUserModel> GetAllUsers()
         {
-            List<ApplicationUserModel> output = new List<ApplicationUserModel>();
+            List<ApplicationUserModel> output = new();
 
             var users = _context.Users.ToList();
             var userRoles = from ur in _context.UserRoles
@@ -109,7 +109,7 @@ namespace TRMApi.Controllers
 
             foreach (var user in users)
             {
-                ApplicationUserModel u = new ApplicationUserModel
+                ApplicationUserModel u = new()
                 {
                     Id = user.Id,
                     Email = user.Email

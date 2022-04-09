@@ -30,7 +30,7 @@ namespace TRMApi.Controllers
 
         [Route("/token")]
         [HttpPost]
-        public async Task<IActionResult> Create(string username, string password, string grant_type)
+        public async Task<IActionResult> Create(string username, string password)
         {
             if (await IsValidUsernameAndPassword(username, password))
             {
@@ -59,10 +59,10 @@ namespace TRMApi.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp,
+                new(ClaimTypes.Name, username),
+                new(ClaimTypes.NameIdentifier, user.Id),
+                new(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
+                new(JwtRegisteredClaimNames.Exp,
                     new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
             };
 
@@ -70,14 +70,14 @@ namespace TRMApi.Controllers
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                claims.Add(new(ClaimTypes.Role, role.Name));
             }
 
             var token = new JwtSecurityToken(
-                new JwtHeader(
+                new(
                     new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                         SecurityAlgorithms.HmacSha256)),
-                new JwtPayload(claims));
+                new(claims));
 
             var output = new
             {
