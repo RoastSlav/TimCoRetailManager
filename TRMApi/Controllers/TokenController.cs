@@ -66,7 +66,7 @@ namespace TRMApi.Controllers
                     new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
             };
 
-            string key = _configuration.GetValue<string>("Secrets:SecurityKey");
+            string key = _configuration.GetValue<string>("SecurityKey");
 
             foreach (var role in roles)
             {

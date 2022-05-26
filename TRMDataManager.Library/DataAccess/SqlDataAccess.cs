@@ -12,9 +12,9 @@ namespace TRMDataManager.Library.DataAccess
     public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private readonly IConfiguration _config;
-        private readonly ILogger _logger;
+        private readonly ILogger<SqlDataAccess> _logger;
 
-        public SqlDataAccess(IConfiguration config, ILogger logger)
+        public SqlDataAccess(IConfiguration config, ILogger<SqlDataAccess> logger)
         {
             _config = config;
             _logger = logger;
