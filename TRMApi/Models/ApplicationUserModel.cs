@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
+﻿namespace TRMApi.Models;
 
-namespace TRMApi.Models
+public class ApplicationUserModel
 {
-    public class ApplicationUserModel
-    {
-        public string Id { get; set; }
-        public string Email { get; set; }
-        public Dictionary<string, string> Roles { get; set; } = new();
-    }
+    public string Id { get; set; }
+    public string Email { get; set; }
+    public Dictionary<string, string> Roles { get; set; } = new();
 }

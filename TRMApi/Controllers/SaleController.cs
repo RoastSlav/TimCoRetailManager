@@ -1,48 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using TRMDataManager.Library.DataAccess;
 using TRMDataManager.Library.Models;
 
-namespace TRMApi.Controllers
+namespace TRMApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class SaleController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public class SaleController : ControllerBase
+    private readonly ISaleData _saleData;
+
+    public SaleController(ISaleData saleData)
     {
-        private readonly ISaleData _saleData;
-
-        public SaleController(ISaleData saleData)
-        {
-            _saleData = saleData;
-        }
+        _saleData = saleData;
+    }
         
-        [HttpPost]
-        public void Post(SaleModel sale)
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    [HttpPost]
+    public void Post(SaleModel sale)
+    {
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            _saleData.SaveSale(sale, userId);
-        }
+        _saleData.SaveSale(sale, userId);
+    }
 
-        [Authorize(Roles = "Admin,Manager")]
-        [Route("GetSalesReport")]
-        [HttpGet]
-        public List<SaleReportModel> GetSalesReport()
-        {
-            return _saleData.GetSaleReport();
-        }
+    [Authorize(Roles = "Admin,Manager")]
+    [Route("GetSalesReport")]
+    [HttpGet]
+    public List<SaleReportModel> GetSalesReport()
+    {
+        return _saleData.GetSaleReport();
+    }
 
-        [AllowAnonymous]
-        [Route("GetTaxRate")]
-        [HttpGet]
-        public decimal GetTaxRate()
-        {
-            return _saleData.GetTaxRate();
-        }
+    [AllowAnonymous]
+    [Route("GetTaxRate")]
+    [HttpGet]
+    public decimal GetTaxRate()
+    {
+        return _saleData.GetTaxRate();
     }
 }

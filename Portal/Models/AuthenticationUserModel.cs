@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Portal.Models
+namespace Portal.Models;
+
+public class AuthenticationUserModel
 {
-    public class AuthenticationUserModel
-    {
-        [Required(ErrorMessage = "Email Address is required.")]
-        public string Email { get; set; }
-        [Required(ErrorMessage = "Password is required.")]
-        public string Password { get; set; }
-    }
+    [Required(ErrorMessage = "Email Address is required.")]
+    public string Email { get; set; }
+    [Required(ErrorMessage = "Password is required.")]
+    public string Password { get; set; }
 }

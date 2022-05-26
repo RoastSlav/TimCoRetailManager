@@ -1,86 +1,81 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Configuration;
 using TRMDesktopUI.Library.Api;
 
-namespace Portal.Authentication
+namespace Portal.Authentication;
+
+public class AuthStateProvider : AuthenticationStateProvider
 {
-    public class AuthStateProvider : AuthenticationStateProvider
+    private readonly HttpClient _httpClient;
+    private readonly ILocalStorageService _localStorage;
+    private readonly IConfiguration _config;
+    private readonly IAPIHelper _apiHelper;
+    private readonly AuthenticationState _anonymous;
+    private readonly string _authTokenStorageKey;
+
+    public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IConfiguration config, IAPIHelper apiHelper)
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILocalStorageService _localStorage;
-        private readonly IConfiguration _config;
-        private readonly IAPIHelper _apiHelper;
-        private readonly AuthenticationState _anonymous;
-        private readonly string _authTokenStorageKey;
+        _httpClient = httpClient;
+        _localStorage = localStorage;
+        _config = config;
+        _apiHelper = apiHelper;
+        _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+        _authTokenStorageKey = _config["authTokenStorageKey"];
+    }
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IConfiguration config, IAPIHelper apiHelper)
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+    {
+        var token = await _localStorage.GetItemAsync<string>(_authTokenStorageKey);
+
+        if (string.IsNullOrWhiteSpace(token))
         {
-            _httpClient = httpClient;
-            _localStorage = localStorage;
-            _config = config;
-            _apiHelper = apiHelper;
-            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-            _authTokenStorageKey = _config["authTokenStorageKey"];
+            return _anonymous;
         }
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        bool isAuthenticated = await NotifyUserAuthentication(token);
+
+        if (isAuthenticated is false)
         {
-            var token = await _localStorage.GetItemAsync<string>(_authTokenStorageKey);
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                return _anonymous;
-            }
-
-            bool isAuthenticated = await NotifyUserAuthentication(token);
-
-            if (isAuthenticated is false)
-            {
-                return _anonymous;
-            }
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-
-            return new AuthenticationState(
-                new ClaimsPrincipal(
-                    new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+            return _anonymous;
         }
 
-        public async Task<bool> NotifyUserAuthentication(string token)
-        {
-            bool isAuthenticatedOutput;
-            Task<AuthenticationState> authState;
-            try
-            {
-                await _apiHelper.GetLoggedInUserInfo(token);
-                var authenticatedUser = new ClaimsPrincipal(
-                    new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
-                authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-                NotifyAuthenticationStateChanged(authState);
-                isAuthenticatedOutput = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                await NotifyUserLogout();
-                isAuthenticatedOutput=false;
-            } 
-            return isAuthenticatedOutput;
-        }
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-        public async Task NotifyUserLogout()
+        return new AuthenticationState(
+            new ClaimsPrincipal(
+                new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+    }
+
+    public async Task<bool> NotifyUserAuthentication(string token)
+    {
+        bool isAuthenticatedOutput;
+        Task<AuthenticationState> authState;
+        try
         {
-            await _localStorage.RemoveItemAsync(_authTokenStorageKey);
-            var authState = Task.FromResult(_anonymous);
-            _apiHelper.LogOffUser();
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            await _apiHelper.GetLoggedInUserInfo(token);
+            var authenticatedUser = new ClaimsPrincipal(
+                new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+            authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
+            isAuthenticatedOutput = true;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            await NotifyUserLogout();
+            isAuthenticatedOutput=false;
+        } 
+        return isAuthenticatedOutput;
+    }
+
+    public async Task NotifyUserLogout()
+    {
+        await _localStorage.RemoveItemAsync(_authTokenStorageKey);
+        var authState = Task.FromResult(_anonymous);
+        _apiHelper.LogOffUser();
+        _httpClient.DefaultRequestHeaders.Authorization = null;
+        NotifyAuthenticationStateChanged(authState);
     }
 }

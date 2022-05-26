@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using TRMDesktopUI.Library.Models;
+﻿using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api
+namespace TRMDesktopUI.Library.Api;
+
+public interface IProductEndpoint
 {
-    public interface IProductEndpoint
-    {
-        Task<List<ProductModel>> GetAll();
-    }
+    Task<List<ProductModel>> GetAll();
 }
