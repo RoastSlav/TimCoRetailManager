@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Models
+public class SaleModel
 {
-    public class SaleModel
-    {
-        public List<SaleDetailModel> SaleDetails { get; set; } = new();
-    }
+    public List<SaleDetailModel> SaleDetails { get; set; } = new();
 }

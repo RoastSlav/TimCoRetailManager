@@ -1,8 +1,7 @@
-﻿namespace TRMApi.Models
+﻿namespace TRMApi.Models;
+
+public class UserRolePairModel
 {
-    public class UserRolePairModel
-    {
-        public string UserId { get; set; }
-        public string RoleName { get; set; }
-    }
+    public string UserId { get; set; }
+    public string RoleName { get; set; }
 }
