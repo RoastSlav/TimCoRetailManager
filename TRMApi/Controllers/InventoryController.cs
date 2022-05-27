@@ -1,34 +1,38 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using TRMDataManager.Library.DataAccess;
 using TRMDataManager.Library.Models;
 
-namespace TRMApi.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-[Authorize]
-public class InventoryController : ControllerBase
+namespace TRMApi.Controllers
 {
-    private readonly IInventoryData _inventoryData;
-
-    public InventoryController(IInventoryData inventoryData)
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class InventoryController : ControllerBase
     {
-        _inventoryData = inventoryData;
-    }
+        private readonly IInventoryData _inventoryData;
 
-    [Authorize(Roles = "Manager,Admin")]
-    [HttpGet]
-    public List<InventoryModel> Get()
-    {
-        return _inventoryData.GetInventory();
-    }
+        public InventoryController(IInventoryData inventoryData)
+        {
+            _inventoryData = inventoryData;
+        }
 
-    [Authorize(Roles = "Admin")]
-    [HttpPost]
-    public void Post(InventoryModel item)
-    {
-        _inventoryData.SaveInventoryRecord(item);
-    }
+        [Authorize(Roles = "Manager,Admin")]
+        [HttpGet]
+        public List<InventoryModel> Get()
+        {
+            return _inventoryData.GetInventory();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public void Post(InventoryModel item)
+        {
+            _inventoryData.SaveInventoryRecord(item);
+        }
         
+    }
 }

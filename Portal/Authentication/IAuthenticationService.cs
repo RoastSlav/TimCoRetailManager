@@ -1,9 +1,11 @@
-﻿using Portal.Models;
+﻿using System.Threading.Tasks;
+using Portal.Models;
 
-namespace Portal.Authentication;
-
-public interface IAuthenticationService
+namespace Portal.Authentication
 {
-    Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication);
-    Task LogOut();
+    public interface IAuthenticationService
+    {
+        Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication);
+        Task LogOut();
+    }
 }

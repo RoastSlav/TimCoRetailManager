@@ -1,17 +1,21 @@
-﻿namespace TRMDesktopUI.Library.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-public class UserModel
+namespace TRMDesktopUI.Library.Models
 {
-    public string Id { get; set; }
-    public string Email { get; set; }
-    public Dictionary<string, string> Roles { get; set; } = new();
-
-    public string RoleList
+    public class UserModel
     {
-        get
-        {
-            return string.Join(", ", Roles.Select(x => x.Value));
-        }
-    }
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public Dictionary<string, string> Roles { get; set; } = new();
 
+        public string RoleList
+        {
+            get
+            {
+                return string.Join(", ", Roles.Select(x => x.Value));
+            }
+        }
+
+    }
 }

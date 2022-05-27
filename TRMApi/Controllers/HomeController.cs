@@ -1,54 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using TRMApi.Models;
 
-namespace TRMApi.Controllers;
-
-public class HomeController : Controller
+namespace TRMApi.Controllers
 {
-    //private readonly RoleManager<IdentityRole> _roleManager;
-    //private readonly UserManager<IdentityUser> _userManager;
-
-    //public HomeController(RoleManager<IdentityRole> roleManager,
-    //        UserManager<IdentityUser> userManager)
-    //{
-    //    _roleManager = roleManager;
-    //    _userManager = userManager;
-    //}
-
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
+        //private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly UserManager<IdentityUser> _userManager;
 
-    public IActionResult Privacy()
-    {
-        //string[] roles = {"Admin", "Manager", "Cashier"};
-
-        //foreach (var role in roles)
+        //public HomeController(RoleManager<IdentityRole> roleManager,
+        //        UserManager<IdentityUser> userManager)
         //{
-        //    var roleExist = await _roleManager.RoleExistsAsync(role);
-
-        //    if (!roleExist)
-        //    {
-        //        await _roleManager.CreateAsync(new IdentityRole(role));
-        //    }
+        //    _roleManager = roleManager;
+        //    _userManager = userManager;
         //}
 
-        //var user = await _userManager.FindByEmailAsync("raikov0411@gmail.com");
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-        //if (user != null)
-        //{
-        //    await _userManager.AddToRoleAsync(user, "Admin");
-        //    await _userManager.AddToRoleAsync(user, "Cashier");
-        //}
+        public IActionResult Privacy()
+        {
+            //string[] roles = {"Admin", "Manager", "Cashier"};
 
-        return View();
-    }
+            //foreach (var role in roles)
+            //{
+            //    var roleExist = await _roleManager.RoleExistsAsync(role);
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            //    if (!roleExist)
+            //    {
+            //        await _roleManager.CreateAsync(new IdentityRole(role));
+            //    }
+            //}
+
+            //var user = await _userManager.FindByEmailAsync("raikov0411@gmail.com");
+
+            //if (user != null)
+            //{
+            //    await _userManager.AddToRoleAsync(user, "Admin");
+            //    await _userManager.AddToRoleAsync(user, "Cashier");
+            //}
+
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

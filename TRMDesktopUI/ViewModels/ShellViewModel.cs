@@ -1,77 +1,84 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using TRMDesktopUI.EventModels;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.ViewModels;
-
-public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
+namespace TRMDesktopUI.ViewModels
 {
-    private readonly IEventAggregator _events;
-    private readonly ILoggedInUserModel _user;
-    private readonly IAPIHelper _apiHelper;
-
-    public ShellViewModel(IEventAggregator events, ILoggedInUserModel user, IAPIHelper apiHelper)
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
-        _events = events;
-        _user = user;
-        _apiHelper = apiHelper;
+        private readonly IEventAggregator _events;
+        private readonly ILoggedInUserModel _user;
+        private readonly IAPIHelper _apiHelper;
 
-        _events.SubscribeOnPublishedThread(this);
-
-        ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
-    }
-
-    public bool IsLoggedIn
-    {
-        get
+        public ShellViewModel(IEventAggregator events, ILoggedInUserModel user, IAPIHelper apiHelper)
         {
-            bool output = false;
+            _events = events;
+            _user = user;
+            _apiHelper = apiHelper;
 
-            if (string.IsNullOrWhiteSpace(_user.Token) == false)
+            _events.SubscribeOnPublishedThread(this);
+
+            ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
+        }
+
+        public bool IsLoggedIn
+        {
+            get
             {
-                output = true;
+                bool output = false;
+
+                if (string.IsNullOrWhiteSpace(_user.Token) == false)
+                {
+                    output = true;
+                }
+
+                return output;
             }
-
-            return output;
         }
-    }
 
-    public bool IsLoggedOut
-    {
-        get
+        public bool IsLoggedOut
         {
-            return !IsLoggedIn;
+            get
+            {
+                return !IsLoggedIn;
+            }
         }
-    }
-    public async Task ExitApplication()
-    {
-        await TryCloseAsync();
-    }
+        public async Task ExitApplication()
+        {
+            await TryCloseAsync();
+        }
 
-    public async Task UserManagement()
-    {
-        await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new());
-    }
+        public async Task UserManagement()
+        {
+            await ActivateItemAsync(IoC.Get<UserDisplayViewModel>(), new());
+        }
 
-    public async Task LogIn()
-    {
-        await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
-    }
+        public async Task LogIn()
+        {
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
+        }
 
-    public async Task LogOut()
-    {
-        _user.ResetUserModel();
-        _apiHelper.LogOffUser();
-        await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
-        NotifyOfPropertyChange(() => IsLoggedIn);
-        NotifyOfPropertyChange(() => IsLoggedOut);
-    }
+        public async Task LogOut()
+        {
+            _user.ResetUserModel();
+            _apiHelper.LogOffUser();
+            await ActivateItemAsync(IoC.Get<LoginViewModel>(), new());
+            NotifyOfPropertyChange(() => IsLoggedIn);
+            NotifyOfPropertyChange(() => IsLoggedOut);
+        }
 
-    public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
-    {
-        await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
-        NotifyOfPropertyChange(() => IsLoggedIn);
-        NotifyOfPropertyChange(() => IsLoggedOut);
+        public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
+        {
+            await ActivateItemAsync(IoC.Get<SalesViewModel>(), cancellationToken);
+            NotifyOfPropertyChange(() => IsLoggedIn);
+            NotifyOfPropertyChange(() => IsLoggedOut);
+        }
     }
 }

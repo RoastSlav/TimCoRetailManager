@@ -1,25 +1,28 @@
-﻿using TRMDataManager.Library.Models;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using TRMDataManager.Library.Models;
 
-namespace TRMDataManager.Library.DataAccess;
-
-public class InventoryData : IInventoryData
+namespace TRMDataManager.Library.DataAccess
 {
-    private readonly ISqlDataAccess _sqlDataAccess;
-
-    public InventoryData(ISqlDataAccess sqlDataAccess)
+    public class InventoryData : IInventoryData
     {
-        _sqlDataAccess = sqlDataAccess;
-    }
+        private readonly ISqlDataAccess _sqlDataAccess;
 
-    public List<InventoryModel> GetInventory()
-    {
-        var output = _sqlDataAccess.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
+        public InventoryData(ISqlDataAccess sqlDataAccess)
+        {
+            _sqlDataAccess = sqlDataAccess;
+        }
+
+        public List<InventoryModel> GetInventory()
+        {
+            var output = _sqlDataAccess.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "TRMData");
             
-        return output;
-    }
+            return output;
+        }
 
-    public void SaveInventoryRecord(InventoryModel item)
-    {
-        _sqlDataAccess.SaveData("dbo.spInventory_Insert", item, "TRMData");
+        public void SaveInventoryRecord(InventoryModel item)
+        {
+            _sqlDataAccess.SaveData("dbo.spInventory_Insert", item, "TRMData");
+        }
     }
 }

@@ -1,30 +1,31 @@
 ﻿using System.ComponentModel;
 
-namespace TRMDesktopUI.Models;
-
-public class ProductDisplayModel : INotifyPropertyChanged
+namespace TRMDesktopUI.Models
 {
-    public int Id { get; set; }
-    public string ProductName { get; set; }
-    public string Description { get; set; }
-    public decimal RetailPrice { get; set; }
-
-    private int _quantityInStock;
-    public int QuantityInStock
+    public class ProductDisplayModel : INotifyPropertyChanged
     {
-        get { return _quantityInStock; }
-        set
+        public int Id { get; set; }
+        public string ProductName { get; set; }
+        public string Description { get; set; }
+        public decimal RetailPrice { get; set; }
+
+        private int _quantityInStock;
+        public int QuantityInStock
         {
-            _quantityInStock = value;
-            CallPropertyChanged(nameof(QuantityInStock));
+            get { return _quantityInStock; }
+            set
+            {
+                _quantityInStock = value;
+                CallPropertyChanged(nameof(QuantityInStock));
+            }
         }
-    }
 
-    public bool IsTaxable { get; set; }
+        public bool IsTaxable { get; set; }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-    public void CallPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new(propertyName));
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void CallPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new(propertyName));
+        }
     }
 }

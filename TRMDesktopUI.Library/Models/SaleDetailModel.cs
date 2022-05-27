@@ -1,7 +1,14 @@
-﻿namespace TRMDesktopUI.Library.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class SaleDetailModel
+namespace TRMDesktopUI.Library.Models
 {
-    public int ProductId { get; set; }
-    public int Quantity { get; set; }
+    public class SaleDetailModel
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+    }
 }

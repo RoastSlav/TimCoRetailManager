@@ -1,6 +1,9 @@
-﻿namespace TRMDataManager.Library.Models;
+﻿using System.Collections.Generic;
 
-public class SaleModel
+namespace TRMDataManager.Library.Models
 {
-    public List<SaleDetailModel> SaleDetails { get; set; }
+    public class SaleModel
+    {
+        public List<SaleDetailModel> SaleDetails { get; set; }
+    }
 }

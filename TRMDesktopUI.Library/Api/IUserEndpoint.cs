@@ -1,15 +1,18 @@
-﻿using TRMDesktopUI.Library.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api;
-
-public interface IUserEndpoint
+namespace TRMDesktopUI.Library.Api
 {
-    Task<List<UserModel>> GetAll();
+    public interface IUserEndpoint
+    {
+        Task<List<UserModel>> GetAll();
 
-    Task<Dictionary<string, string>> GetAllRoles();
+        Task<Dictionary<string, string>> GetAllRoles();
 
-    Task AddUserToRole(string userId, string roleName);
+        Task AddUserToRole(string userId, string roleName);
 
-    Task RemoveUserFromRole(string userId, string roleName);
-    Task CreateUser(CreateUserModel model);
+        Task RemoveUserFromRole(string userId, string roleName);
+        Task CreateUser(CreateUserModel model);
+    }
 }

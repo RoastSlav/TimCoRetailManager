@@ -1,8 +1,10 @@
-﻿using TRMDesktopUI.Library.Models;
+﻿using System.Threading.Tasks;
+using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api;
-
-public interface ISaleEndpoint
+namespace TRMDesktopUI.Library.Api
 {
-    Task PostSale(SaleModel sale);
+    public interface ISaleEndpoint
+    {
+        Task PostSale(SaleModel sale);
+    }
 }

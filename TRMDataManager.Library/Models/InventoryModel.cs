@@ -1,9 +1,12 @@
-﻿namespace TRMDataManager.Library.Models;
+﻿using System;
 
-public class InventoryModel
+namespace TRMDataManager.Library.Models
 {
-    public int ProductId { get; set; }
-    public int Quantity { get; set; }
-    public decimal PurchasePrice { get; set; }
-    public DateTime PurchaseDate { get; set; }
+    public class InventoryModel
+    {
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public DateTime PurchaseDate { get; set; }
+    }
 }

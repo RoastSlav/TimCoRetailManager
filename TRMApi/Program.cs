@@ -1,8 +1,17 @@
+using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Configuration;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TRMApi;
 using TRMApi.Data;
+using TRMApi.Models;
 using TRMDataManager.Library.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);

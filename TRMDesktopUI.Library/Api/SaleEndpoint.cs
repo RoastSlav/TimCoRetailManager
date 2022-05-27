@@ -1,25 +1,32 @@
-﻿using TRMDesktopUI.Library.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api;
-
-public class SaleEndpoint : ISaleEndpoint
+namespace TRMDesktopUI.Library.Api
 {
-    private readonly IAPIHelper _apiHelper;
-    public SaleEndpoint(IAPIHelper apiHelper)
+    public class SaleEndpoint : ISaleEndpoint
     {
-        _apiHelper = apiHelper;
-    }
-
-    public async Task PostSale(SaleModel sale)
-    {
-        using HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale);
-        if (response.IsSuccessStatusCode)
+        private readonly IAPIHelper _apiHelper;
+        public SaleEndpoint(IAPIHelper apiHelper)
         {
-            //Log successful call?
+            _apiHelper = apiHelper;
         }
-        else
+
+        public async Task PostSale(SaleModel sale)
         {
-            throw new(response.ReasonPhrase);
+            using HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale);
+            if (response.IsSuccessStatusCode)
+            {
+                //Log successful call?
+            }
+            else
+            {
+                throw new(response.ReasonPhrase);
+            }
         }
     }
 }

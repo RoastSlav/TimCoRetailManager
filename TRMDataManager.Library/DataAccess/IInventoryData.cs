@@ -1,9 +1,11 @@
-﻿using TRMDataManager.Library.Models;
+﻿using System.Collections.Generic;
+using TRMDataManager.Library.Models;
 
-namespace TRMDataManager.Library.DataAccess;
-
-public interface IInventoryData
+namespace TRMDataManager.Library.DataAccess
 {
-    List<InventoryModel> GetInventory();
-    void SaveInventoryRecord(InventoryModel item);
+    public interface IInventoryData
+    {
+        List<InventoryModel> GetInventory();
+        void SaveInventoryRecord(InventoryModel item);
+    }
 }

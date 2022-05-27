@@ -1,7 +1,8 @@
-﻿namespace Portal.Models;
-
-public class AuthenticatedUserModel
+﻿namespace Portal.Models
 {
-    public string Access_Token { get; set; }
-    public string UserName { get; set; }
+    public class AuthenticatedUserModel
+    {
+        public string Access_Token { get; set; }
+        public string UserName { get; set; }
+    }
 }

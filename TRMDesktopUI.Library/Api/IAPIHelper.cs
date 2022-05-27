@@ -1,13 +1,16 @@
-﻿using TRMDesktopUI.Library.Models;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api;
-
-public interface IAPIHelper
+namespace TRMDesktopUI.Library.Api
 {
-    Task<AuthenticatedUser> Authenticate(string username, string password);
-    HttpClient ApiClient { get; }
+    public interface IAPIHelper
+    {
+        Task<AuthenticatedUser> Authenticate(string username, string password);
+        HttpClient ApiClient { get; }
 
-    Task GetLoggedInUserInfo(string token);
+        Task GetLoggedInUserInfo(string token);
 
-    void LogOffUser();
+        void LogOffUser();
+    }
 }

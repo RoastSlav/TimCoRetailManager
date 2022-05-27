@@ -1,9 +1,11 @@
-﻿using TRMDataManager.Library.Models;
+﻿using System.Collections.Generic;
+using TRMDataManager.Library.Models;
 
-namespace TRMDataManager.Library.DataAccess;
-
-public interface IUserData
+namespace TRMDataManager.Library.DataAccess
 {
-    List<UserModel> GetUserById(string Id);
-    void CreateUser(UserModel user);
+    public interface IUserData
+    {
+        List<UserModel> GetUserById(string Id);
+        void CreateUser(UserModel user);
+    }
 }

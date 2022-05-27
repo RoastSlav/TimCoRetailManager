@@ -1,60 +1,64 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 
-namespace Portal.Authentication;
-
-public static class JwtParser
+namespace Portal.Authentication
 {
-    public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+    public static class JwtParser
     {
-        var claims = new List<Claim>();
-        var payload = jwt.Split('.')[1];
+        public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        {
+            var claims = new List<Claim>();
+            var payload = jwt.Split('.')[1];
 
-        var jsonBytes = ParseBase64WithoutPadding(payload);
+            var jsonBytes = ParseBase64WithoutPadding(payload);
             
-        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
-        ExtractRolesFromJWT(claims, keyValuePairs);
+            ExtractRolesFromJWT(claims, keyValuePairs);
 
-        claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
 
-        return claims;
-    }
+            return claims;
+        }
 
-    private static void ExtractRolesFromJWT(List<Claim> claims, Dictionary<string, object> keyValuePairs)
-    {
-        keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
-
-        if (roles is not null)
+        private static void ExtractRolesFromJWT(List<Claim> claims, Dictionary<string, object> keyValuePairs)
         {
-            var parsedRoles = roles.ToString().Trim().TrimStart('[').TrimEnd(']').Split(',');
+            keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
 
-            if (parsedRoles.Length > 1)
+            if (roles is not null)
             {
-                foreach (var parsedRole in parsedRoles)
+                var parsedRoles = roles.ToString().Trim().TrimStart('[').TrimEnd(']').Split(',');
+
+                if (parsedRoles.Length > 1)
                 {
-                    claims.Add(new(ClaimTypes.Role, parsedRole.Trim('"')));
+                    foreach (var parsedRole in parsedRoles)
+                    {
+                        claims.Add(new(ClaimTypes.Role, parsedRole.Trim('"')));
+                    }
                 }
-            }
-            else
-            {
-                claims.Add(new(ClaimTypes.Role, parsedRoles[0]));
-            }
+                else
+                {
+                    claims.Add(new(ClaimTypes.Role, parsedRoles[0]));
+                }
 
-            keyValuePairs.Remove(ClaimTypes.Role);
+                keyValuePairs.Remove(ClaimTypes.Role);
+            }
         }
-    }
 
-    private static byte[] ParseBase64WithoutPadding(string base64)
-    {
-        switch (base64.Length % 4)
+        private static byte[] ParseBase64WithoutPadding(string base64)
         {
-            case 2: base64 += "==";
-                break;
-            case 3: base64 += "=";
-                break;
-        }
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "==";
+                    break;
+                case 3: base64 += "=";
+                    break;
+            }
 
-        return Convert.FromBase64String(base64);
+            return Convert.FromBase64String(base64);
+        }
     }
 }

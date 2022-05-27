@@ -1,26 +1,33 @@
-﻿using TRMDesktopUI.Library.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api;
-
-public class ProductEndpoint : IProductEndpoint
+namespace TRMDesktopUI.Library.Api
 {
-    private readonly IAPIHelper _apiHelper;
-    public ProductEndpoint(IAPIHelper apiHelper)
+    public class ProductEndpoint : IProductEndpoint
     {
-        _apiHelper = apiHelper;
-    }
-
-    public async Task<List<ProductModel>> GetAll()
-    {
-        using HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Product");
-        if (response.IsSuccessStatusCode)
+        private readonly IAPIHelper _apiHelper;
+        public ProductEndpoint(IAPIHelper apiHelper)
         {
-            var result = await response.Content.ReadAsAsync<List<ProductModel>>();
-            return result;
+            _apiHelper = apiHelper;
         }
-        else
+
+        public async Task<List<ProductModel>> GetAll()
         {
-            throw new(response.ReasonPhrase);
+            using HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Product");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsAsync<List<ProductModel>>();
+                return result;
+            }
+            else
+            {
+                throw new(response.ReasonPhrase);
+            }
         }
     }
 }

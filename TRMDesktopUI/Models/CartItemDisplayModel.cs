@@ -1,33 +1,36 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TRMDesktopUI.Annotations;
 
-namespace TRMDesktopUI.Models;
-
-public class CartItemDisplayModel : INotifyPropertyChanged
+namespace TRMDesktopUI.Models
 {
-    public ProductDisplayModel Product { get; set; }
-    private int _quantityInCart;
-
-    public int QuantityInCart
+    public class CartItemDisplayModel : INotifyPropertyChanged
     {
-        get { return _quantityInCart; }
-        set
+        public ProductDisplayModel Product { get; set; }
+        private int _quantityInCart;
+
+        public int QuantityInCart
         {
-            _quantityInCart = value;
-            CallPropertyChanged(nameof(QuantityInCart));
-            CallPropertyChanged(nameof(DisplayText));
+            get { return _quantityInCart; }
+            set
+            {
+                _quantityInCart = value;
+                CallPropertyChanged(nameof(QuantityInCart));
+                CallPropertyChanged(nameof(DisplayText));
+            }
         }
-    }
 
 
-    public string DisplayText
-    {
-        get { return $"{Product.ProductName} ({QuantityInCart})"; }
-    }
+        public string DisplayText
+        {
+            get { return $"{Product.ProductName} ({QuantityInCart})"; }
+        }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-    public void CallPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new(propertyName));
+        public void CallPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new(propertyName));
+        }
     }
 }

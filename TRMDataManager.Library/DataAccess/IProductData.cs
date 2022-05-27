@@ -1,9 +1,11 @@
-﻿using TRMDataManager.Library.Models;
+﻿using System.Collections.Generic;
+using TRMDataManager.Library.Models;
 
-namespace TRMDataManager.Library.DataAccess;
-
-public interface IProductData
+namespace TRMDataManager.Library.DataAccess
 {
-    List<ProductModel> GetProducts();
-    ProductModel GetProductById(int productId);
+    public interface IProductData
+    {
+        List<ProductModel> GetProducts();
+        ProductModel GetProductById(int productId);
+    }
 }

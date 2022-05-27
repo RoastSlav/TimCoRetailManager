@@ -1,7 +1,14 @@
-﻿namespace TRMDesktopUI.Library.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class AuthenticatedUser
+namespace TRMDesktopUI.Library.Models
 {
-    public string UserName { get; set; }
-    public string Access_Token { get; set; }
+    public class AuthenticatedUser
+    {
+        public string UserName { get; set; }
+        public string Access_Token { get; set; }
+    }
 }

@@ -1,63 +1,69 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using Portal.Models;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
+using Portal.Models;
 
-namespace Portal.Authentication;
-
-public class AuthenticationService : IAuthenticationService
+namespace Portal.Authentication
 {
-    private readonly HttpClient _httpClient;
-    private readonly AuthenticationStateProvider _authStateProvider;
-    private readonly ILocalStorageService _localStorage;
-    private readonly IConfiguration _config;
-    private readonly string _authTokenStorageKey;
-
-    public AuthenticationService(HttpClient httpClient, AuthenticationStateProvider authStateProvider,
-        ILocalStorageService localStorage, IConfiguration config)
+    public class AuthenticationService : IAuthenticationService
     {
-        _httpClient = httpClient;
-        _authStateProvider = authStateProvider;
-        _localStorage = localStorage;
-        _config = config;
-        _authTokenStorageKey = _config["authTokenStorageKey"];
-    }
+        private readonly HttpClient _httpClient;
+        private readonly AuthenticationStateProvider _authStateProvider;
+        private readonly ILocalStorageService _localStorage;
+        private readonly IConfiguration _config;
+        private readonly string _authTokenStorageKey;
 
-    public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
-    {
-        var data = new FormUrlEncodedContent(new[]
+        public AuthenticationService(HttpClient httpClient, AuthenticationStateProvider authStateProvider,
+            ILocalStorageService localStorage, IConfiguration config)
         {
-            new KeyValuePair<string, string>("grant_type", "password"),
-            new KeyValuePair<string, string>("username", userForAuthentication.Email),
-            new KeyValuePair<string, string>("password", userForAuthentication.Password)
-        });
-
-        string api = _config["api"] + _config["tokenEndpoint"];
-        var authResult = await _httpClient.PostAsync(api, data);
-        var authContent = await authResult.Content.ReadAsStringAsync();
-
-        if (authResult.IsSuccessStatusCode == false)
-        {
-            return null;
+            _httpClient = httpClient;
+            _authStateProvider = authStateProvider;
+            _localStorage = localStorage;
+            _config = config;
+            _authTokenStorageKey = _config["authTokenStorageKey"];
         }
 
-        var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent, 
-            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        public async Task<AuthenticatedUserModel> Login(AuthenticationUserModel userForAuthentication)
+        {
+            var data = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", userForAuthentication.Email),
+                new KeyValuePair<string, string>("password", userForAuthentication.Password)
+            });
 
-        await _localStorage.SetItemAsync(_authTokenStorageKey, result.Access_Token);
+            string api = _config["api"] + _config["tokenEndpoint"];
+            var authResult = await _httpClient.PostAsync(api, data);
+            var authContent = await authResult.Content.ReadAsStringAsync();
 
-        await ((AuthStateProvider) _authStateProvider).NotifyUserAuthentication(result.Access_Token);
+            if (authResult.IsSuccessStatusCode == false)
+            {
+                return null;
+            }
 
-        _httpClient.DefaultRequestHeaders.Authorization =
-            new("bearer", result.Access_Token);
+            var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent, 
+                new() { PropertyNameCaseInsensitive = true });
 
-        return result;
-    }
+            await _localStorage.SetItemAsync(_authTokenStorageKey, result.Access_Token);
 
-    public async Task LogOut()
-    {
-        await _localStorage.RemoveItemAsync(_authTokenStorageKey);
-        await ((AuthStateProvider) _authStateProvider).NotifyUserLogout();
-        _httpClient.DefaultRequestHeaders.Authorization = null;
+            await ((AuthStateProvider) _authStateProvider).NotifyUserAuthentication(result.Access_Token);
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new("bearer", result.Access_Token);
+
+            return result;
+        }
+
+        public async Task LogOut()
+        {
+            await _localStorage.RemoveItemAsync(_authTokenStorageKey);
+            await ((AuthStateProvider) _authStateProvider).NotifyUserLogout();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+        }
     }
 }

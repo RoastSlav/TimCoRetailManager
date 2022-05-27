@@ -1,26 +1,33 @@
-﻿using TRMDataManager.Library.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using TRMDataManager.Library.Models;
 
-namespace TRMDataManager.Library.DataAccess;
-
-public class UserData : IUserData
+namespace TRMDataManager.Library.DataAccess
 {
-    private readonly ISqlDataAccess _sqlDataAccess;
-
-    public UserData(ISqlDataAccess sqlDataAccess)
+    public class UserData : IUserData
     {
-        _sqlDataAccess = sqlDataAccess;
-    }
+        private readonly ISqlDataAccess _sqlDataAccess;
 
-    public List<UserModel> GetUserById(string Id)
-    {
-        var output = _sqlDataAccess.LoadData<UserModel, dynamic>("dbo.spUserLookup", new { Id }, "TRMData");
+        public UserData(ISqlDataAccess sqlDataAccess)
+        {
+            _sqlDataAccess = sqlDataAccess;
+        }
 
-        return output;
-    }
+        public List<UserModel> GetUserById(string Id)
+        {
+            var output = _sqlDataAccess.LoadData<UserModel, dynamic>("dbo.spUserLookup", new { Id }, "TRMData");
 
-    public void CreateUser(UserModel user)
-    {
-        _sqlDataAccess.SaveData("dbo.spUser_Create",
-            new {user.Id, user.FirstName, user.LastName, user.EmailAddress}, "TRMData");
+            return output;
+        }
+
+        public void CreateUser(UserModel user)
+        {
+            _sqlDataAccess.SaveData("dbo.spUser_Create",
+                new {user.Id, user.FirstName, user.LastName, user.EmailAddress}, "TRMData");
+        }
     }
 }

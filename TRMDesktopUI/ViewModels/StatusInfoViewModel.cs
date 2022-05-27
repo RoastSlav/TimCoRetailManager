@@ -1,23 +1,25 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 
-namespace TRMDesktopUI.ViewModels;
-
-public class StatusInfoViewModel : Screen
+namespace TRMDesktopUI.ViewModels
 {
-    public string Header { get; private set; }
-    public string Message { get; private set; }
-
-    public void UpdateMessage(string header, string message)
+    public class StatusInfoViewModel : Screen
     {
-        Header = header;
-        Message = message;
+        public string Header { get; private set; }
+        public string Message { get; private set; }
 
-        NotifyOfPropertyChange(() => Header);
-        NotifyOfPropertyChange(() => Message);
-    }
+        public void UpdateMessage(string header, string message)
+        {
+            Header = header;
+            Message = message;
 
-    public async Task Close()
-    {
-        await TryCloseAsync();
+            NotifyOfPropertyChange(() => Header);
+            NotifyOfPropertyChange(() => Message);
+        }
+
+        public async Task Close()
+        {
+            await TryCloseAsync();
+        }
     }
 }
