@@ -42,7 +42,7 @@ public class AuthenticationService : IAuthenticationService
         }
 
         var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent, 
-            new() { PropertyNameCaseInsensitive = true });
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
         await _localStorage.SetItemAsync(_authTokenStorageKey, result.Access_Token);
 
