@@ -15,7 +15,7 @@ public class SaleEndpoint : ISaleEndpoint
         using HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale);
         if (response.IsSuccessStatusCode)
         {
-            //Log successful call?
+            //TODO Log successful call?
         }
         else
         {

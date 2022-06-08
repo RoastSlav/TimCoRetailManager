@@ -55,8 +55,10 @@ public class AuthStateProvider : AuthenticationStateProvider
         try
         {
             await _apiHelper.GetLoggedInUserInfo(token);
+
             var authenticatedUser = new ClaimsPrincipal(
                 new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
+
             authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
             isAuthenticatedOutput = true;
@@ -73,7 +75,9 @@ public class AuthStateProvider : AuthenticationStateProvider
     public async Task NotifyUserLogout()
     {
         await _localStorage.RemoveItemAsync(_authTokenStorageKey);
+
         var authState = Task.FromResult(_anonymous);
+
         _apiHelper.LogOffUser();
         _httpClient.DefaultRequestHeaders.Authorization = null;
         NotifyAuthenticationStateChanged(authState);

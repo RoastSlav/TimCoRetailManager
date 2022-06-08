@@ -23,6 +23,8 @@ public class HomeController : Controller
 
     public IActionResult Privacy()
     {
+        //Used for seeding the roles in the EF database.
+        
         //string[] roles = {"Admin", "Manager", "Cashier"};
 
         //foreach (var role in roles)

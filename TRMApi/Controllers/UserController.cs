@@ -95,6 +95,8 @@ public class UserController : ControllerBase
         List<ApplicationUserModel> output = new();
 
         var users = _context.Users.ToList();
+
+        //Gets the userRoles from the EF database and creates an anonymous object with them.
         var userRoles = from ur in _context.UserRoles
             join r in _context.Roles on ur.RoleId equals r.Id
             select new {ur.UserId, ur.RoleId, r.Name};
