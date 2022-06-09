@@ -123,7 +123,7 @@ public class UserDisplayViewModel : Screen
             settings.ResizeMode = ResizeMode.NoResize;
             settings.Title = "System Error";
 
-            if (ex.Message == "Unauthorized")
+            if (ex.Message == "Forbidden")
             {
                 _status.UpdateMessage("Unauthorized Access",
                     "You do not have permission to interact with the Users Form.");
