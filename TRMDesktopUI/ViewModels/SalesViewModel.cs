@@ -83,7 +83,6 @@ public class SalesViewModel : Screen
     private async Task ResetSalesViewModel()
     {
         Cart = new();
-        //TODO - Add clearing the selectedCartItem if it does not do it itself
         await LoadProducts();
 
         NotifyOfPropertyChange(() => SubTotal);

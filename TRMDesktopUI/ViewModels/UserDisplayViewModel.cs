@@ -33,11 +33,7 @@ public class UserDisplayViewModel : Screen
         set
         {
             _selectedUser = value;
-            SelectedUserName = value.Email;
-            UserRoles.Clear();
-            UserRoles = new(value.Roles.Select(x => x.Value).ToList());
-            //TODO - Pull up this to a function.
-            LoadRoles();
+            LoadUserDetails();
             NotifyOfPropertyChange(() => SelectedUser);
             NotifyOfPropertyChange(() => CanAddSelectedRole);
         }
@@ -147,6 +143,14 @@ public class UserDisplayViewModel : Screen
     {
         var userList = await _userEndpoint.GetAll();
         Users = new(userList);
+    }
+
+    private async void LoadUserDetails()
+    {
+        SelectedUserName = _selectedUser.Email;
+        UserRoles.Clear();
+        UserRoles = new(_selectedUser.Roles.Select(x => x.Value).ToList());
+        await LoadRoles();
     }
 
     private async Task LoadRoles()
