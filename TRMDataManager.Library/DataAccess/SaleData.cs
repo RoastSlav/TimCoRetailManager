@@ -33,10 +33,8 @@ public class SaleData : ISaleData
         return output;
     }
 
-    public void SaveSale(SaleModel saleInfo, string cashierId)
+    private List<SaleDetailDBModel> CollectProductDetailsInSale(SaleModel saleInfo)
     {
-        //TODO: Make this SOLID/DRY/Better
-
         List<SaleDetailDBModel> details = new();
         var taxRate = GetTaxRate();
 
@@ -63,8 +61,14 @@ public class SaleData : ISaleData
                 detail.Tax = detail.PurchasePrice * taxRate;
             }
 
-            details.Add(detail);;
+            details.Add(detail);
         }
+        return details;
+    }
+
+    public void SaveSale(SaleModel saleInfo,string cashierId)
+    {
+        var details = CollectProductDetailsInSale(saleInfo);
 
         SaleDbModel sale = new()
         {
@@ -72,7 +76,6 @@ public class SaleData : ISaleData
             Tax = details.Sum(x => x.Tax),
             CashierId = cashierId
         };
-
         sale.Total = sale.SubTotal + sale.Tax;
             
         try
