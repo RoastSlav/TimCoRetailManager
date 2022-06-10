@@ -18,7 +18,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return new RedirectResult("~/swagger");
     }
 
     public IActionResult Privacy()
