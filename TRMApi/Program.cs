@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TRMApi.Data;
 using TRMDataManager.Library.DataAccess;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,33 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllersWithViews();
 builder.Services.AddLogging();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo {Title = "TimCo Retail Manager", Version ="v1"});
+    c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization using JWT beaerer security scheme"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "bearerAuth"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 //Personal Services
 
@@ -72,7 +99,7 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseSwagger();
+app.UseSwagger().UseAuthentication();
 app.UseSwaggerUI();
 
 app.UseRouting();
