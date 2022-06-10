@@ -26,12 +26,7 @@ public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
         get
         {
-            bool output = false;
-
-            if (string.IsNullOrWhiteSpace(_user.Token) == false)
-            {
-                output = true;
-            }
+            bool output = string.IsNullOrWhiteSpace(_user.Token) == false;
 
             return output;
         }

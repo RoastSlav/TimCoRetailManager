@@ -47,6 +47,9 @@ public class TokenController : Controller
     private async Task<dynamic> GenerateToken(string username)
     {
         var user = await _userManager.FindByEmailAsync(username);
+
+        //Gets the roles and rolesId from the EF database that match the roles that the user has
+        //and creates an anonymous object with them.
         var roles = from ur in _context.UserRoles
             join r in _context.Roles on ur.RoleId equals r.Id
             where ur.UserId == user.Id
@@ -69,10 +72,11 @@ public class TokenController : Controller
         }
 
         var token = new JwtSecurityToken(
-            new(
-                new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            new JwtHeader(
+                new SigningCredentials
+                (new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     SecurityAlgorithms.HmacSha256)),
-            new(claims));
+            new JwtPayload(claims));
 
         var output = new
         {

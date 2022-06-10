@@ -1,7 +1,7 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Text.Json;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Portal.Models;
-using System.Text.Json;
 
 namespace Portal.Authentication;
 

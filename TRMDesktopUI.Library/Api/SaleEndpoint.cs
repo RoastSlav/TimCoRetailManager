@@ -13,11 +13,7 @@ public class SaleEndpoint : ISaleEndpoint
     public async Task PostSale(SaleModel sale)
     {
         using HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale);
-        if (response.IsSuccessStatusCode)
-        {
-            //Log successful call?
-        }
-        else
+        if (response.IsSuccessStatusCode == false)
         {
             throw new(response.ReasonPhrase);
         }

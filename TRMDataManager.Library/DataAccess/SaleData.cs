@@ -33,11 +33,8 @@ public class SaleData : ISaleData
         return output;
     }
 
-    public void SaveSale(SaleModel saleInfo, string cashierId)
+    private List<SaleDetailDBModel> CollectProductDetailsInSale(SaleModel saleInfo)
     {
-        //TODO: Make this SOLID/DRY/Better
-
-        //Start filling in the sale details models we will save to the database
         List<SaleDetailDBModel> details = new();
         var taxRate = GetTaxRate();
 
@@ -64,34 +61,35 @@ public class SaleData : ISaleData
                 detail.Tax = detail.PurchasePrice * taxRate;
             }
 
-            details.Add(detail);;
+            details.Add(detail);
         }
+        return details;
+    }
 
-        //Create the Sale model
+    public void SaveSale(SaleModel saleInfo,string cashierId)
+    {
+        var details = CollectProductDetailsInSale(saleInfo);
+
         SaleDbModel sale = new()
         {
             SubTotal = details.Sum(x => x.PurchasePrice),
             Tax = details.Sum(x => x.Tax),
             CashierId = cashierId
         };
-
         sale.Total = sale.SubTotal + sale.Tax;
             
         try
         {
             _sqlDataAccess.StartTransaction("TRMData");
 
-            //Save the sale model
             _sqlDataAccess.SaveDataInTransaction("dbo.spSale_Insert", sale);
 
             //Get the ID from the sale model
             sale.Id = _sqlDataAccess.LoadDataInTransaction<int, dynamic>("spSale_Lookup", new { sale.CashierId, sale.SaleDate }).FirstOrDefault();
 
-            //Finish filling in the sale detail models
             foreach (var item in details)
             {
                 item.SaleId = sale.Id;
-                //Save the sale detail models
                 _sqlDataAccess.SaveDataInTransaction("dbo.spSaleDetail_Insert", item);
             }
 

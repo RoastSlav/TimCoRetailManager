@@ -61,13 +61,6 @@ public class SalesViewModel : Screen
         }
     }
 
-    private async Task LoadProducts()
-    {
-        var productsList = await _productEndpoint.GetAll();
-        var products = _mapper.Map<List<ProductDisplayModel>>(productsList);
-        Products = new(products);
-    }
-
     private BindingList<ProductDisplayModel> _products;
 
     public BindingList<ProductDisplayModel> Products
@@ -80,10 +73,16 @@ public class SalesViewModel : Screen
         }
     }
 
+    private async Task LoadProducts()
+    {
+        var productsList = await _productEndpoint.GetAll();
+        var products = _mapper.Map<List<ProductDisplayModel>>(productsList);
+        Products = new(products);
+    }
+
     private async Task ResetSalesViewModel()
     {
         Cart = new();
-        //TODO - Add clearing the selectedCartItem if it does not do it itself
         await LoadProducts();
 
         NotifyOfPropertyChange(() => SubTotal);
@@ -197,13 +196,8 @@ public class SalesViewModel : Screen
     {
         get
         {
-            bool output = false;
-
-            if(ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
-            {
-                output = true;
-            }
-
+            //Checks if an item is selected and if it has enough of it to add to the cart.
+            bool output = ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity;
 
             return output;
         }
@@ -239,13 +233,8 @@ public class SalesViewModel : Screen
     {
         get
         {
-            bool output = false;
-
-            if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
-            {
-                output = true;
-            }
-
+            //Checks if an item is selected and that it has enough of it to be removed
+            bool output = SelectedCartItem is {QuantityInCart: > 0};
 
             return output;
         }
@@ -274,13 +263,7 @@ public class SalesViewModel : Screen
     {
         get
         {
-            bool output = false;
-
-            //Make sure something is in the cart
-            if (Cart.Count > 0)
-            {
-                output = true;
-            }
+            bool output = Cart.Count > 0;
 
             return output;
         }
@@ -289,6 +272,7 @@ public class SalesViewModel : Screen
     public async Task CheckOut()
     {
         SaleModel sale = new();
+
         foreach (var item in Cart)
         {
             sale.SaleDetails.Add((new()
