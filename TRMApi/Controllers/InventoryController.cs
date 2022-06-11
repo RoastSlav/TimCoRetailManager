@@ -11,10 +11,12 @@ namespace TRMApi.Controllers;
 public class InventoryController : ControllerBase
 {
     private readonly IInventoryData _inventoryData;
+    private readonly ILogger<InventoryController> _logger;
 
-    public InventoryController(IInventoryData inventoryData)
+    public InventoryController(IInventoryData inventoryData, ILogger<InventoryController> logger)
     {
         _inventoryData = inventoryData;
+        _logger = logger;
     }
 
     [Authorize(Roles = "Manager,Admin")]
@@ -29,6 +31,7 @@ public class InventoryController : ControllerBase
     public void Post(InventoryModel item)
     {
         _inventoryData.SaveInventoryRecord(item);
+        _logger.LogInformation("Added {quantity} items to inventory with ID: {itemId}",item.Quantity, item.ProductId);
     }
         
 }

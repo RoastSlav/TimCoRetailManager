@@ -14,13 +14,15 @@ public class TokenController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<TokenController> _logger;
 
     public TokenController(ApplicationDbContext context, UserManager<IdentityUser> userManager,
-        IConfiguration configuration)
+        IConfiguration configuration, ILogger<TokenController> logger)
     {
         _context = context;
         _userManager = userManager;
         _configuration = configuration;
+        _logger = logger;
     }
 
     [Route("/token")]
@@ -29,10 +31,12 @@ public class TokenController : Controller
     {
         if (await IsValidUsernameAndPassword(username, password))
         {
+            _logger.LogInformation("User {username} tried to log in", username);
             return new ObjectResult(await GenerateToken(username));
         }
         else
         {
+            _logger.LogInformation("User {username} provided wrong credentials for log in", username);
             return BadRequest();
         }
     }

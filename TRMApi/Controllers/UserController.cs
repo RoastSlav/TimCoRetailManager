@@ -79,11 +79,13 @@ public class UserController : ControllerBase
                         EmailAddress = user.EmailAddress,
                     };
                     _userData.CreateUser(userModel);
+                    _logger.LogInformation("Created user {username}", user.EmailAddress);
                     return Ok();
                 }
             }
         }
 
+        _logger.LogInformation("Couldn't create user {username}", user.EmailAddress);
         return BadRequest();
     }
 

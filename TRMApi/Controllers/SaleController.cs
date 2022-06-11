@@ -12,10 +12,12 @@ namespace TRMApi.Controllers;
 public class SaleController : ControllerBase
 {
     private readonly ISaleData _saleData;
+    private readonly ILogger<SaleController> _logger;
 
-    public SaleController(ISaleData saleData)
+    public SaleController(ISaleData saleData, ILogger<SaleController> logger)
     {
         _saleData = saleData;
+        _logger = logger;
     }
         
     [HttpPost]
@@ -24,6 +26,7 @@ public class SaleController : ControllerBase
         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         _saleData.SaveSale(sale, userId);
+        _logger.LogInformation("Created a sale record by user {userId}", userId);
     }
 
     [Authorize(Roles = "Admin,Manager")]
@@ -31,6 +34,9 @@ public class SaleController : ControllerBase
     [HttpGet]
     public List<SaleReportModel> GetSalesReport()
     {
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        _logger.LogInformation("User {userId} requested a sales report", userId);
         return _saleData.GetSaleReport();
     }
 
