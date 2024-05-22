@@ -1,25 +1,16 @@
-[![Build status](https://dev.azure.com/raikov0411/TimCoRetailManager/_apis/build/status/Standard%20Continuous%20Integration%20Build)](https://dev.azure.com/raikov0411/TimCoRetailManager/_build/latest?definitionId=1)
-# TimCo Retail Manager
-Project from a course.
+# TimCoRetailManager
 
-The idea of the project was to simulate working on a real project where requirements change, you have upgrade from old to new technologies, etc.
-The project was started on .NET framework 4.8 then transitioned to .NET Core 3.0 then upgraded through to .NET 6.
+## Overview
+TimCoRetailManager is a multi-faceted project developed during a course, simulating a real-world software development environment with evolving requirements and technology upgrades. The project transitioned from .NET Framework 4.8 to .NET Core 3.0 and finally to .NET 6, incorporating various technologies across its modules.
 
---------------------------------------**Technologies used**--------------------------------------
+## Features
+- **Web API:** Utilizes Dapper, EF Core, and ASP.NET, with documentation in Swagger OpenAPI.
+- **WPF Application:** Implements Caliburn.Micro and AutoMapper for efficient UI management.
+- **Blazor WASM:** Features Blazored.LocalStorage and JWT for enhanced web app functionality.
 
-\=\=\=**WebAPI**===
-
- - Dapper
- - EF Core
- - ASP.NET
- - Swagger OpenAPI
-
-\=\=\=**WPF app**===
-
- - Caliburn.Micro
- - AutoMapper
-
-\=\=\=**Blazor WASM**===
-
- - Blazored.LocalStorage
- - JSON Web Tokens(JWT)
+## Technologies Used
+- C#
+- HTML/CSS
+- JavaScript
+- TSQL
+- .NET technologies including .NET Framework, .NET Core, and .NET 6
